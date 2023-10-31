@@ -1,6 +1,7 @@
+
 plugins {
-    kotlin("jvm") version "1.9.20-Beta2"
-    application
+    kotlin("jvm") version "1.9.20"
+    java
 }
 
 group = "org.example"
@@ -14,14 +15,26 @@ kotlin {
     jvmToolchain(21)
 }
 
-application {
-    mainClass.set("MainKt")
+sourceSets {
+    main {
+        java {
+            srcDirs(
+                "src/main/kotlin/"
+            )
+        }
+    }
 }
 
-dependencies {
-    testImplementation(kotlin("test"))
-}
+tasks.jar {
+    manifest {
+        attributes("Main-Class" to "MainKt")
+    }
 
-tasks.test {
-    useJUnitPlatform()
+    // To add all of the dependencies
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from ({
+        configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
+    })
 }
