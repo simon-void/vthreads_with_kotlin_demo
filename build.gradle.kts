@@ -1,6 +1,6 @@
 
 plugins {
-    kotlin("jvm") version "1.9.20"
+    kotlin("jvm") version "1.9.21"
     java
 }
 
@@ -30,7 +30,7 @@ tasks.jar {
         attributes("Main-Class" to "MainKt")
     }
 
-    // To add all of the dependencies
+    // To add all the dependencies
     from(sourceSets.main.get().output)
 
     dependsOn(configurations.runtimeClasspath)
